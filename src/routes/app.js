@@ -90,7 +90,8 @@ const App = ({ children, dispatch, app, loading, location }) => {
         </aside> : ''}
         <div className={styles.main}>
           <Header {...headerProps} />
-          <Bread {...breadProps} />
+        {  // <Bread {...breadProps} />
+         }
           <div className={styles.container}>
             <div className={styles.content}>
               {hasPermission ? children : <Error />}

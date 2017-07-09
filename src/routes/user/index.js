@@ -16,7 +16,7 @@ const User = ({ location, dispatch, user, loading }) => {
     visible: modalVisible,
     maskClosable: false,
     confirmLoading: loading.effects['user/update'],
-    title: `${modalType === 'create' ? 'Create User' : 'Update User'}`,
+    title: `${modalType === 'create' ? '创建用户' : '更新用户'}`,
     wrapClassName: 'vertical-center-modal',
     onOk (data) {
       dispatch({
@@ -126,7 +126,9 @@ const User = ({ location, dispatch, user, loading }) => {
 
   return (
     <div className="content-inner">
-      <Filter {...filterProps} />
+      {
+        //<Filter {...filterProps} />
+      }
       {
          selectedRowKeys.length > 0 &&
            <Row style={{ marginBottom: 24, textAlign: 'right', fontSize: 13 }}>

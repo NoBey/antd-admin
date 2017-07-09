@@ -31,9 +31,9 @@ const modal = ({
       }
       const data = {
         ...getFieldsValue(),
-        key: item.key,
+        key: item._id,
       }
-      data.address = data.address.join(' ')
+      console.log(data)
       onOk(data)
     })
   }
@@ -46,7 +46,7 @@ const modal = ({
   return (
     <Modal {...modalOpts}>
       <Form layout="horizontal">
-        <FormItem label="Name" hasFeedback {...formItemLayout}>
+        <FormItem label="姓名" hasFeedback {...formItemLayout}>
           {getFieldDecorator('name', {
             initialValue: item.name,
             rules: [
@@ -56,55 +56,53 @@ const modal = ({
             ],
           })(<Input />)}
         </FormItem>
-        <FormItem label="NickName" hasFeedback {...formItemLayout}>
-          {getFieldDecorator('nickName', {
-            initialValue: item.nickName,
-            rules: [
-              {
-                required: true,
-              },
-            ],
+        <FormItem label="职务" hasFeedback {...formItemLayout}>
+          {getFieldDecorator('position', {
+            initialValue: item.position,
+            rules: [],
           })(<Input />)}
         </FormItem>
-        <FormItem label="Gender" hasFeedback {...formItemLayout}>
-          {getFieldDecorator('isMale', {
-            initialValue: item.isMale,
-            rules: [
-              {
-                required: true,
-                type: 'boolean',
-              },
-            ],
-          })(
-            <Radio.Group>
-              <Radio value>Male</Radio>
-              <Radio value={false}>Female</Radio>
-            </Radio.Group>
-          )}
+
+        <FormItem label="公司" hasFeedback {...formItemLayout}>
+          {getFieldDecorator('company', {
+            initialValue: item.company,
+            rules: [],
+          })(<Input />)}
         </FormItem>
-        <FormItem label="Age" hasFeedback {...formItemLayout}>
-          {getFieldDecorator('age', {
-            initialValue: item.age,
-            rules: [
-              {
-                required: true,
-                type: 'number',
-              },
-            ],
-          })(<InputNumber min={18} max={100} />)}
-        </FormItem>
-        <FormItem label="Phone" hasFeedback {...formItemLayout}>
+
+        <FormItem label="手机" hasFeedback {...formItemLayout}>
           {getFieldDecorator('phone', {
             initialValue: item.phone,
             rules: [
               {
                 required: true,
                 pattern: /^1[34578]\d{9}$/,
-                message: 'The input is not valid phone!',
+                message: '必须是手机号!',
               },
             ],
           })(<Input />)}
         </FormItem>
+
+        <FormItem label="微信" hasFeedback {...formItemLayout}>
+          {getFieldDecorator('weixin', {
+            initialValue: item.weixin,
+            rules: [],
+          })(<Input />)}
+        </FormItem>
+
+        <FormItem label="QQ" hasFeedback {...formItemLayout}>
+          {getFieldDecorator('qq', {
+            initialValue: item.qq,
+            rules: [],
+          })(<Input />)}
+        </FormItem>
+        <FormItem label="公司" hasFeedback {...formItemLayout}>
+          {getFieldDecorator('company', {
+            initialValue: item.company,
+            rules: [],
+          })(<Input />)}
+        </FormItem>
+
         <FormItem label="E-mail" hasFeedback {...formItemLayout}>
           {getFieldDecorator('email', {
             initialValue: item.email,
@@ -112,25 +110,10 @@ const modal = ({
               {
                 required: true,
                 pattern: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/,
-                message: 'The input is not valid E-mail!',
+                message: '必须是邮箱!',
               },
             ],
           })(<Input />)}
-        </FormItem>
-        <FormItem label="Address" hasFeedback {...formItemLayout}>
-          {getFieldDecorator('address', {
-            initialValue: item.address && item.address.split(' '),
-            rules: [
-              {
-                required: true,
-              },
-            ],
-          })(<Cascader
-            size="large"
-            style={{ width: '100%' }}
-            options={city}
-            placeholder="Pick an address"
-          />)}
         </FormItem>
       </Form>
     </Modal>

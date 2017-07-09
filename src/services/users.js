@@ -4,7 +4,7 @@ const { users } = api
 
 export async function query (params) {
   return request({
-    url: users,
+    url: '/admin/api/user',
     method: 'get',
     data: params,
   })

@@ -45,7 +45,8 @@
     "lint"
   ],
   "scripts": {
-    "dev": "set BROWSER=none&&set HOST=0.0.0.0&&roadhog server",
+    "dev": "PORT=9002 roadhog server",
+    "dev1": "set BROWSER=none&&set HOST=0.0.0.0&&roadhog server",
     "lint": "eslint --fix --ext .js src",
     "build": "roadhog build"
   }

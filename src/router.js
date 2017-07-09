@@ -124,12 +124,20 @@ const Routers = function ({ history, app }) {
             }, 'chart-areaChart')
           },
         }, {
-          path: 'post',
+          path: 'addmap',
           getComponent (nextState, cb) {
             require.ensure([], require => {
-              registerModel(app, require('./models/post'))
-              cb(null, require('./routes/post/'))
-            }, 'post')
+              // registerModel(app, require('./models/post'))
+              cb(null, require('./routes/addmap/'))
+            }, 'addmap')
+          },
+        },{
+          path: 'addgoods',
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+              // registerModel(app, require('./models/post'))
+              cb(null, require('./routes/addgoods/'))
+            }, 'addgoods')
           },
         }, {
           path: '*',

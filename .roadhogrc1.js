@@ -11,10 +11,10 @@ export default {
   "theme": "./theme.config.js",
   // 接口代理示例
   "proxy": {
-    '/admin/api': {
+    '/api': {
         target: 'http://127.0.0.1:9999',
         pathRewrite: {
-          '^/admin/api': '/admin/api'
+          '^/api': '/api'
         },
         changeOrigin: true
       },

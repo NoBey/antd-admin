@@ -5,22 +5,28 @@ let database = [
   {
     id: '1',
     icon: 'laptop',
-    name: 'Dashboard',
+    name: '测试',
     route: '/dashboard',
   },
   {
     id: '2',
     bpid: '1',
-    name: 'Users',
+    name: '用户管理',
     icon: 'user',
     route: '/user',
   },
   {
     id: '7',
     bpid: '1',
-    name: 'Posts',
-    icon: 'shopping-cart',
-    route: '/post',
+    name: '添加领办地图',
+    icon: 'global',
+    route: '/addmap',
+  },
+  {
+    id: '8',
+    name: '添加领办商品',
+    icon: 'home',
+    route: '/addgoods',
   },
   {
     id: '21',
