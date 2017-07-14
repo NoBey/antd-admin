@@ -4,7 +4,7 @@ import dva from 'dva'
 import createLoading from 'dva-loading'
 import { browserHistory } from 'dva/router'
 import { message } from 'antd'
-
+import theme from 'react-quill/dist/quill.snow.css'
 // 1. Initialize
 const app = dva({
   ...createLoading({

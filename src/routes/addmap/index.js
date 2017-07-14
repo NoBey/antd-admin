@@ -1,12 +1,36 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import {Button, Icon, Table, Modal, Input} from 'antd'
+import {Button, Icon, Table, Modal, Input, Form} from 'antd'
 // import { selecttab } from '../actions/app'
 // import Appcomponents from '../components/App'
+import ReactQuill from 'react-quill'
 const {Column, ColumnGroup} = Table;
 import axios from 'axios'
+const FormItem = Form.Item
+const formItemLayout = {
+  labelCol: {
+    span: 6,
+  },
+  wrapperCol: {
+    span: 14,
+  },
+}
+const Infomodules = {
+  toolbar: [
+    ['image'],
+  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+  ['blockquote', 'code-block'],
 
+  [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+  [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
 
+  [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+  [{ 'align': [] }],
+  ['clean']                                         // remove formatting button
+]
+}
 class Container extends React.Component {
     state = {
         title: '',
@@ -153,22 +177,39 @@ class Container extends React.Component {
             }}>
                 <Button type="primary" onClick={this.open.bind(this)}>添加</Button>
                 <Table columns={columns} dataSource={spacedata}/>
-                <Modal title={title} visible={show} onOk={this.handleOk.bind(this)} onCancel={this.handleCancel.bind(this)}>
+                <Modal title={title} visible={show} onOk={this.handleOk.bind(this)} onCancel={this.handleCancel.bind(this)} width={'70%'}>
+                  <FormItem  label="领办地点名称" {...formItemLayout}>
                     <Input style={{
                         width: '100%'
-                    }} value={name} onChange={({target}) => this.setState({name: target.value})} addonBefore={'领办地点名称'}/>
-                    <Input style={{
-                        width: '100%'
-                    }} value={address} onChange={({target}) => this.setState({address: target.value})} addonBefore={'领办地址'}/>
-                    <Input style={{
-                        width: '100%'
-                    }} value={x} onChange={({target}) => this.setState({x: target.value})} addonBefore={'领办纬度'}/>
-                    <Input style={{
-                        width: '100%'
-                    }} value={y} onChange={({target}) => this.setState({y: target.value})} addonBefore={'领办经度'}/>
-                    <Input type="textarea" value={info} onChange={({target}) => this.setState({info: target.value})} style={{
-                        width: '100%'
-                    }} placeholder={'领办简介'}/>
+                    }} value={name} onChange={({target}) => this.setState({name: target.value})} />
+                  </FormItem>
+                    <FormItem  label="领办地址" {...formItemLayout}>
+                      <Input style={{
+                          width: '100%'
+                      }} value={address} onChange={({target}) => this.setState({address: target.value})} />
+                    </FormItem>
+                    <FormItem  label="领办纬度" {...formItemLayout}>
+                      <Input style={{
+                          width: '100%'
+                      }} value={x} onChange={({target}) => this.setState({x: target.value})} />
+                    </FormItem>
+                    <FormItem  label="领办经度" {...formItemLayout}>
+                      <Input style={{
+                          width: '100%'
+                      }} value={y} onChange={({target}) => this.setState({y: target.value})} />
+                    </FormItem>
+                    <FormItem  label="领办简介" {...formItemLayout}>
+                      <ReactQuill modules={Infomodules}  value={info} onChange={(v)=>{
+                          console.log(v)
+                          this.setState({info: v})
+                        }} >
+                        <div style={{minHeight:'400px'}}>
+
+                        </div>
+                      </ReactQuill>
+                    </FormItem>
+
+
                 </Modal>
             </div>
         )
