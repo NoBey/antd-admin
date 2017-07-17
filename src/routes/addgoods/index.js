@@ -6,49 +6,43 @@ import {
     Table,
     Modal,
     Input,
-    Select
+    Select,
+    Form
 } from 'antd'
+const FormItem = Form.Item
+import ReactQuill from 'react-quill'
+
 // import { selecttab } from '../actions/app'
 // import Appcomponents from '../components/App'
 const {Column, ColumnGroup} = Table;
 import axios from 'axios'
 
-
+const formItemLayout = {
+  labelCol: {
+    span: 4,
+  },
+  wrapperCol: {
+    span: 18,
+  },
+}
 const Option = Select.Option;
-const data = [
-    {
-        key: '1',
-        name: '柜子一号',
-        type: 'chest',
-        price: '12',
-        state:  {
-        "date" : new Date(),
-        "day" : 180,
-        "rent" : true
-       },
-    }, {
-        key: '2',
-        name: '屋子一号',
-        type: 'room',
-        price: '32',
-        state: {
-        "date" : new Date(),
-        "day" : 180,
-        "rent" : false
-       }
-    }, {
-        key: '3',
-        name: '卡座一号',
-        type: 'booth',
-        price: '43',
-        state: {
-        "date" : new Date(),
-        "day" : 180,
-        "rent" : true
-       }
-    }
-];
 
+const Infomodules = {
+  toolbar: [
+    ['image'],
+  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+  ['blockquote', 'code-block'],
+
+  [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+  [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+
+  [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+  [{ 'align': [] }],
+  ['clean']                                         // remove formatting button
+]
+}
 
 class Container extends React.Component {
     state = {
@@ -57,9 +51,11 @@ class Container extends React.Component {
         type: '',
         price: '',
         state: '',
+        space: '',
         show: false,
         maplist:[],
         mapname:'',
+        content:'',
         spaceitemData: [],
         columns: [
             {
@@ -78,7 +74,11 @@ class Container extends React.Component {
             }, {
                 title: '状态',
                 key: 'state',
-                render: (data) => (data.state.rent ? '已购买' : '空闲')
+                render: (data) => (data.state.rent ?  '已购买' : '空闲')
+            },{
+                title: '剩余天数',
+                key: 'day',
+                render: (data) => (data.state.day ?  data.state.day : 0)
             }, {
                 title: '操作',
                 key: 'action',
@@ -104,13 +104,15 @@ class Container extends React.Component {
         console.log('click ', e);
     }
     handleOk() {
-        const {name, type, price, state, key, mapname} = this.state
+        const {name, type, price, state, key, mapname,space, content } = this.state
         const data = {
             name,
             type,
             price,
             state,
-            key
+            key,
+            space,
+            content
         }
           if(key){
             // 编辑
@@ -124,7 +126,7 @@ class Container extends React.Component {
           }
         console.log(data)
         this.setState({show: false})
-        this.setState({name: '', type: '', price: '', state: '', key: ''})
+        this.setState({name: '', type: '', price: '', state: '', key: '',space:'',content:''})
 
         axios.get('/admin/api/spaceitem?all=true&space=' + mapname).then((d) => {
             const tmp = d.data.map(a => ({
@@ -141,7 +143,7 @@ class Container extends React.Component {
     }
     handleCancel() {
         this.setState({show: false})
-        this.setState({name: '', type: '', price: '', state: '', key: ''})
+        this.setState({name: '', type: '', price: '', state: '', key: '',space:'',content:''})
 
     }
     SelectChange(value){
@@ -154,7 +156,8 @@ class Container extends React.Component {
             type: a.type,
             price: a.price,
             state:  a.state,
-            space: a.space
+            space: a.space,
+            content:a.content
           }))
           this.setState({spaceitemData: tmp})
       })
@@ -168,7 +171,7 @@ class Container extends React.Component {
             this.setState(data)
         } else {
             this.setState({title: '添加'})
-            this.setState({name: '', type: '', price: '', state: '', key: ''})
+            this.setState({name: '', type: '', price: '', state: '', key: '',space:'',content:''})
         }
         this.setState({show: true})
     }
@@ -181,6 +184,8 @@ class Container extends React.Component {
             type,
             price,
             state,
+            space,
+            content,
             maplist,
             mapname,
             spaceitemData
@@ -200,10 +205,23 @@ class Container extends React.Component {
 
 
                 <Table columns={columns} dataSource={spaceitemData}/>
-                <Modal title={title} visible={show} onOk={this.handleOk.bind(this)} onCancel={this.handleCancel.bind(this)}>
+                <Modal title={title} visible={show} onOk={this.handleOk.bind(this)} onCancel={this.handleCancel.bind(this)} width={'60%'}>
+
+                  <FormItem  label="商品名字" {...formItemLayout}>
                     <Input style={{
                         width: '100%'
-                    }} value={name} onChange={({target}) => this.setState({name: target.value})} addonBefore={'商品名字'}/>
+                    }} value={name} onChange={({target}) => this.setState({name: target.value})} />
+                  </FormItem>
+                  <FormItem  label="空间" {...formItemLayout}>
+                    <Select defaultValue={space} style={{
+                        width: '100%'
+                    }} onChange={(space)=> this.setState({space})}>
+
+                    {maplist.map((a)=><Option key={a} value={a}>{a}</Option>)}
+
+                    </Select>
+                  </FormItem>
+                  <FormItem  label="类型" {...formItemLayout}>
                     <Select defaultValue={type} style={{
                         width: '100%'
                     }} onChange={(v)=> this.setState({type: v})}>
@@ -211,10 +229,37 @@ class Container extends React.Component {
                     <Option value={'booth'}>{'卡座'}</Option>
                     <Option value={'chest'}>{'柜子'}</Option>
                     </Select>
+                  </FormItem>
 
+                  <FormItem  label="价格" {...formItemLayout}>
                     <Input style={{
                         width: '100%'
-                    }} value={price} onChange={({target}) => this.setState({price: target.value})} addonBefore={'价格'}/>
+                    }} value={price} onChange={({target}) => this.setState({price: target.value})}/>
+                  </FormItem>
+
+                  <FormItem  label="天数" {...formItemLayout}>
+                    <Input style={{
+                        width: '100%'
+                    }} value={state.day} onChange={({target}) => this.setState({state: {day:target.value}})} />
+                  </FormItem>
+                  <FormItem  label="状态" {...formItemLayout}>
+                    <Select defaultValue={state.rent} style={{
+                        width: '100%'
+                    }} onChange={(rent)=> this.setState({state:{rent}})}>
+                    <Option value={false}>{'空闲-可购买'}</Option>
+                    <Option value={true}>{'已购买-不可购买'}</Option>
+                    </Select>
+                  </FormItem>
+
+                  <FormItem  label="简介" {...formItemLayout}>
+                    <ReactQuill modules={Infomodules}  value={content} onChange={(content)=>{
+                        this.setState({content})
+                      }} >
+                      <div style={{minHeight:'400px'}}>
+
+                      </div>
+                    </ReactQuill>
+                  </FormItem>
 
                 </Modal>
             </div>

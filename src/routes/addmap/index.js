@@ -9,10 +9,10 @@ import axios from 'axios'
 const FormItem = Form.Item
 const formItemLayout = {
   labelCol: {
-    span: 6,
+    span: 4,
   },
   wrapperCol: {
-    span: 14,
+    span: 18,
   },
 }
 const Infomodules = {
@@ -53,7 +53,10 @@ class Container extends React.Component {
             }, {
                 title: '领办简介',
                 dataIndex: 'info',
-                key: 'info'
+                key: 'info',
+                render: (data) => (
+                  <span style={{width: '100px',display: 'block', height: '20px'}}>{data}</span>
+                )
             }, {
                 title: '领办纬度',
                 dataIndex: 'x',
@@ -177,7 +180,7 @@ class Container extends React.Component {
             }}>
                 <Button type="primary" onClick={this.open.bind(this)}>添加</Button>
                 <Table columns={columns} dataSource={spacedata}/>
-                <Modal title={title} visible={show} onOk={this.handleOk.bind(this)} onCancel={this.handleCancel.bind(this)} width={'70%'}>
+                <Modal title={title} visible={show} onOk={this.handleOk.bind(this)} onCancel={this.handleCancel.bind(this)} width={'60%'}>
                   <FormItem  label="领办地点名称" {...formItemLayout}>
                     <Input style={{
                         width: '100%'
@@ -188,6 +191,7 @@ class Container extends React.Component {
                           width: '100%'
                       }} value={address} onChange={({target}) => this.setState({address: target.value})} />
                     </FormItem>
+
                     <FormItem  label="领办纬度" {...formItemLayout}>
                       <Input style={{
                           width: '100%'
